@@ -111,7 +111,9 @@ class PSUControl_Tasmota(octoprint.plugin.StartupPlugin,
 
         status = None
         try:
-            status = (data['POWER' + str(self.config['plug'])] == 'ON')
+            # On some devices it seems to add the plug number, on others it doesn't.
+            # So check for both variants.
+            status = ((data.get('POWER' + str(self.config['plug'])) or data.get('POWER')) == 'ON')
         except KeyError:
             pass
 
